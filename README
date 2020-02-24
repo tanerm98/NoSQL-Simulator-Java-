@@ -1,0 +1,72 @@
+MUSTAFA Taner - 325 CB - Tema 2 POO - Simulator NoSQL
+
+Tema implementeaza un simulator de baza de date de tip NoSQL.
+
+Tema contine urmatoarele clase / intefete:
+
+	Interfata <GenericAttribute>
+ -> declara metoda <get()>, valabila in toate atributele, care returneaza in
+ format <String> valoarea atributului;
+ -> este implementata de clasele <StrinAt>, <IntAt> & <FloatAt>, care reprezinta
+ atribute de tip <String>, <Integer>, respectiv <Float>.
+
+	Clasa <Instance>
+ -> folosita pentru a creea o instanta noual
+ -> contine numele entitatii, timestampul curent si un <List> de atribute;
+ -> este clonabila (in database, instantele sunt copiate, nu pointeaza toate
+ la aceleasi date).
+
+	Clasa <Node>
+ -> folosita pentru a crea un nod nou cu capacitatea maxima specificata;
+ -> contine un <LinkedList> cu instante.
+
+	Clasa <Entity>
+ -> folosita pentru a crea o entitate noua cu ReplicationFactor si nr de atribute
+ specificate;
+ -> contine un <LinkedHashMap> cu atribute (cheia = numele atributului,
+ valoarea = tipul atributului <String, Integer sau Float>).
+
+	Clasa <DataBase>
+ -> folosita pentru a crea o noua baza de date cu numele, nr de noduri si
+ capacitatea maxima pentru fiecare nod specificate;
+ -> contine nodurile stocate intr-un <ArrayList>;
+ -> contine entitatile stocate intr-un <HashMap> (cheia = numele entitatii,
+ valoarea = obiect de tip <Entity>).
+
+	Clasa <Comenzi>
+ -> folosita pentru citirea si executarea comenzilor;
+ -> Constructorul deschide fisierele de I/O;
+    
+    Metoda <executa()>
+	-> citeste fiecare comanda in parte;
+	-> executa comanda (creeaza un database sau o entitate) sau apeleaza
+	metoda corespunzatoare.
+    Metoda <insertInstance (Scanner com)>
+	-> creeaza o noua instanta cu atributele citite de la tastatura;
+	-> parcurge in acelasi timp Map-ul de atribute al entitatii coresp.
+	pentru a stabili daca se creeaza atribut de tip <String>, <Integer> sau
+	<Float>;
+	-> introduce copii ale instantei in baza de date, in functie de
+	ReplicationFactor; daca nu se pot introduce toate copiile, se apeleaza
+	metoda <scaleaza()>, care adauga nod nou in baza de date.
+    Metoda <deleteInstance(Scanner com)>
+	-> cauta instanta cu cheia unica citita din input si ii sterge toate
+	copiile din toate nodurie; daca nu o gaseste, afiseaza un mesaj
+	corespunzator.
+     Metoda <updateInstance(Scanner com)>
+	-> cauta instanta cu cheia unica citita din input si ii updateaza
+	toate atributele cu cele noi, specificate, inclusiv timestamp-ul.
+    Metoda <getInstances(Scanner com)>
+	-> cauta instanta citita din input si returneaza nodurile in care se
+	afla, impreuna cu toate atributele. Parcurge in acelasi timp si entitatea
+	pentru a afisa pentru fiecare atribut, numele acestuia.
+	-> daca nu gaseste instanta in database, se afiseaza mesajul corespunzator.
+    Metoda <fatala()>
+	-> afiseaza tot database-ul.
+    Metoda <cleanup()>
+	-> sterge toate instantele din database mai vechi decat timestamp-ul
+	citit din input.
+
+	Clasa Tema2
+ -> clasa principala, citeste numele fisierului de input, creeaza un obiect
+ de tip <Comenzi> si apeleaza metoda <executa()>.
